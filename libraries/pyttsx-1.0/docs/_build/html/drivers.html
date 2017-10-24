@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Implementing drivers &mdash; pyttsx v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyttsx v1.0 documentation" href="index.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="Using pyttsx" href="engine.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="changelog.html" title="Changelog"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="engine.html" title="Using pyttsx"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyttsx v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="implementing-drivers">
+<h1>Implementing drivers<a class="headerlink" href="#implementing-drivers" title="Permalink to this headline">¶</a></h1>
+<p>You can implement new drivers for the <tt class="xref docutils literal"><span class="pre">pyttsx.Engine</span></tt> by:</p>
+<ol class="arabic simple">
+<li>Creating a Python module with the name of your new driver.</li>
+<li>Implementing the required driver factory function and class in your module.</li>
+<li>Using methods on a <a title="pyttsx.driver.DriverProxy" class="reference" href="#pyttsx.driver.DriverProxy"><tt class="xref docutils literal"><span class="pre">pyttsx.driver.DriverProxy</span></tt></a> instance provided by the <tt class="xref docutils literal"><span class="pre">pyttsx.Engine</span></tt> to control the event queue and notify applications about events.</li>
+</ol>
+<div class="section" id="module-pyttsx.drivers">
+<h2>The Driver interface<a class="headerlink" href="#module-pyttsx.drivers" title="Permalink to this headline">¶</a></h2>
+<p>All drivers must implement the following factory function and driver interface.</p>
+<dl class="function">
+<dt id="pyttsx.drivers.buildDriver">
+<tt class="descclassname">pyttsx.drivers.</tt><tt class="descname">buildDriver</tt><big>(</big><em>proxy : pyttsx.driver.DriverProxy</em><big>)</big> &rarr; pyttsx.drivers.DriverDelegate<a class="headerlink" href="#pyttsx.drivers.buildDriver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates delegate subclass declared in this module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>proxy</em> &#8211; Proxy instance provided by a <tt class="xref docutils literal"><span class="pre">pyttsx.Engine</span></tt> instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyttsx.drivers.DriverDelegate">
+<em class="property">
+class </em><tt class="descclassname">pyttsx.drivers.</tt><tt class="descname">DriverDelegate</tt><a class="headerlink" href="#pyttsx.drivers.DriverDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a title="pyttsx.drivers.DriverDelegate" class="reference" href="#pyttsx.drivers.DriverDelegate"><tt class="xref docutils literal"><span class="pre">DriverDelegate</span></tt></a> class is not actually declared in <tt class="xref docutils literal"><span class="pre">pyttsx.drivers</span></tt> and cannot server as a base class. It is only here for the purpose of documenting the interface all drivers must implement.</p>
+</div>
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>proxy : pyttsx.drivers.DriverProxy</em>, <em>*args</em>, <em>**kwargs</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.drivers.DriverDelegate.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor. Must store the proxy reference.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>proxy</em> &#8211; Proxy instance provided by the <a title="pyttsx.drivers.buildDriver" class="reference" href="#pyttsx.drivers.buildDriver"><tt class="xref docutils literal"><span class="pre">buildDriver()</span></tt></a> function.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.destroy">
+<tt class="descname">destroy</tt><big>(</big><big>)</big><a class="headerlink" href="#pyttsx.drivers.DriverDelegate.destroy" title="Permalink to this definition">¶</a></dt>
+<dd>Optional. Invoked by the <a title="pyttsx.driver.DriverProxy" class="reference" href="#pyttsx.driver.DriverProxy"><tt class="xref docutils literal"><span class="pre">pyttsx.driver.DriverProxy</span></tt></a> when it is being destroyed so this delegate can clean up any synthesizer resources. If not implemented, the proxy proceeds safely.</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.endLoop">
+<tt class="descname">endLoop</tt><big>(</big><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.drivers.DriverDelegate.endLoop" title="Permalink to this definition">¶</a></dt>
+<dd>Immediately ends a running driver event loop.</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.getProperty">
+<tt class="descname">getProperty</tt><big>(</big><em>name : string</em><big>)</big> &rarr; object<a class="headerlink" href="#pyttsx.drivers.DriverDelegate.getProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Immediately gets the named property value. At least those properties listed in the <tt class="xref docutils literal"><span class="pre">pyttsx.Engine.getProperty()</span></tt> documentation must be supported.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>name</em> &#8211; Name of the property to query.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Value of the property at the time of this invocation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.say">
+<tt class="descname">say</tt><big>(</big><em>text : unicode</em>, <em>name : string</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.drivers.DriverDelegate.say" title="Permalink to this definition">¶</a></dt>
+<dd><p>Immediately speaks an utterance. The speech must be output according to the current property values applied at the time of this invocation. Before this method returns, it must invoke <a title="pyttsx.driver.DriverProxy.setBusy" class="reference" href="#pyttsx.driver.DriverProxy.setBusy"><tt class="xref docutils literal"><span class="pre">pyttsx.driver.DriverProxy.setBusy()</span></tt></a> with value <tt class="xref xref docutils literal"><span class="pre">True</span></tt> to stall further processing of the command queue until the output completes or is interrupted.</p>
+<p>This method must trigger one and only one <cite>started-utterance</cite> notification when output begins, one <cite>started-word</cite> notification at the start of each word in the utterance, and a <cite>finished-utterance</cite> notification when output completes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>text</em> &#8211; Text to speak.</li>
+<li><em>name</em> &#8211; Name to associate with the utterance. Included in notifications about this utterance.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.setProperty">
+<tt class="descname">setProperty</tt><big>(</big><em>name : string</em>, <em>value : object</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.drivers.DriverDelegate.setProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Immediately sets the named property value. At least those properties listed in the <tt class="xref docutils literal"><span class="pre">pyttsx.Engine.setProperty()</span></tt> documentation must be supported. After setting the property, the driver must invoke <a title="pyttsx.driver.DriverProxy.setBusy" class="reference" href="#pyttsx.driver.DriverProxy.setBusy"><tt class="xref docutils literal"><span class="pre">pyttsx.driver.DriverProxy.setBusy()</span></tt></a> with value <tt class="xref xref docutils literal"><span class="pre">False</span></tt> to pump the command queue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> &#8211; Name of the property to change.</li>
+<li><em>value</em> &#8211; Value to set.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.startLoop">
+<tt class="descname">startLoop</tt><big>(</big><big>)</big><a class="headerlink" href="#pyttsx.drivers.DriverDelegate.startLoop" title="Permalink to this definition">¶</a></dt>
+<dd>Immediately starts an event loop. The loop is responsible for sending notifications about utterances and pumping the command queue by using methods on the <a title="pyttsx.driver.DriverProxy" class="reference" href="#pyttsx.driver.DriverProxy"><tt class="xref docutils literal"><span class="pre">pyttsx.driver.DriverProxy</span></tt></a> object given to the factory function that created this object.</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.drivers.DriverDelegate.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#pyttsx.drivers.DriverDelegate.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Immediately stops the current utterance output. This method must trigger a <cite>finished-utterance</cite> notification if called during on-going output. It must trigger no notification if there is no ongoing output.</p>
+<p>After stopping the output and sending any required notification, the driver must invoke <a title="pyttsx.driver.DriverProxy.setBusy" class="reference" href="#pyttsx.driver.DriverProxy.setBusy"><tt class="xref docutils literal"><span class="pre">pyttsx.driver.DriverProxy.setBusy()</span></tt></a> with value <tt class="xref xref docutils literal"><span class="pre">False</span></tt> to pump the command queue.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyttsx.driver">
+<h2>The DriverProxy interface<a class="headerlink" href="#module-pyttsx.driver" title="Permalink to this headline">¶</a></h2>
+<p>The <a title="pyttsx.drivers.buildDriver" class="reference" href="#pyttsx.drivers.buildDriver"><tt class="xref docutils literal"><span class="pre">pyttsx.drivers.buildDriver()</span></tt></a> factory receives an instance of a <a title="pyttsx.driver.DriverProxy" class="reference" href="#pyttsx.driver.DriverProxy"><tt class="xref docutils literal"><span class="pre">DriverProxy</span></tt></a> class and provides it to the <a title="pyttsx.drivers.DriverDelegate" class="reference" href="#pyttsx.drivers.DriverDelegate"><tt class="xref docutils literal"><span class="pre">pyttsx.drivers.DriverDelegate</span></tt></a> it constructs. The driver delegate can invoke the following public methods on the proxy instance. All other public methods found in the code are reserved for use by an <tt class="xref docutils literal"><span class="pre">pyttsx.Engine</span></tt> instance.</p>
+<dl class="class">
+<dt id="pyttsx.driver.DriverProxy">
+<em class="property">
+class </em><tt class="descclassname">pyttsx.driver.</tt><tt class="descname">DriverProxy</tt><a class="headerlink" href="#pyttsx.driver.DriverProxy" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pyttsx.driver.DriverProxy.isBusy">
+<tt class="descname">isBusy</tt><big>(</big><big>)</big> &rarr; bool<a class="headerlink" href="#pyttsx.driver.DriverProxy.isBusy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets if the proxy is busy and cannot process the next command in the queue or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True means busy, False means idle.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.driver.DriverProxy.notify">
+<tt class="descname">notify</tt><big>(</big><em>topic : string</em>, <em>**kwargs</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.driver.DriverProxy.notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fires a notification.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>topic</em> &#8211; The name of the notification.</td>
+</tr>
+<tr class="field"><th class="field-name">Kwargs:</th><td class="field-body">Name/value pairs associated with the topic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.driver.DriverProxy.setBusy">
+<tt class="descname">setBusy</tt><big>(</big><em>busy : bool</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.driver.DriverProxy.setBusy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the proxy to busy so it cannot continue to pump the command queue or idle so it can process the next command.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>busy</em> &#8211; True to set busy, false to set idle</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference" href="">Implementing drivers</a><ul>
+<li><a class="reference" href="#module-pyttsx.drivers">The Driver interface</a></li>
+<li><a class="reference" href="#module-pyttsx.driver">The DriverProxy interface</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="engine.html"
+                                  title="previous chapter">Using pyttsx</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="changelog.html"
+                                  title="next chapter">Changelog</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="changelog.html" title="Changelog"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="engine.html" title="Using pyttsx"
+             >previous</a> |</li>
+        <li><a href="index.html">pyttsx v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Peter Parente.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+    </div>
+  </body>
+</html>

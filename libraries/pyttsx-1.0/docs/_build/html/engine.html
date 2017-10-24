@@ -1,0 +1,573 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using pyttsx &mdash; pyttsx v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyttsx v1.0 documentation" href="index.html" />
+    <link rel="next" title="Implementing drivers" href="drivers.html" />
+    <link rel="prev" title="pyttsx - Text-to-speech x-platform" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="drivers.html" title="Implementing drivers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="pyttsx - Text-to-speech x-platform"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyttsx v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="using-pyttsx">
+<span id="module-pyttsx"></span><h1>Using pyttsx<a class="headerlink" href="#using-pyttsx" title="Permalink to this headline">¶</a></h1>
+<p>An application invokes the <a title="pyttsx.init" class="reference" href="#pyttsx.init"><tt class="xref docutils literal"><span class="pre">pyttsx.init()</span></tt></a> factory function to get a reference to a <tt class="xref docutils literal"><span class="pre">pyttsx.Engine</span></tt> instance. During construction, the engine initializes a <a title="pyttsx.driver.DriverProxy" class="reference" href="drivers.html#pyttsx.driver.DriverProxy"><tt class="xref docutils literal"><span class="pre">pyttsx.driver.DriverProxy</span></tt></a> object responsible for loading a speech engine driver implementation from the <a title="The package containing the available driver implementations" class="reference" href="drivers.html#module-pyttsx.drivers"><tt class="xref docutils literal"><span class="pre">pyttsx.drivers</span></tt></a> module. After construction, an application uses the engine object to register and unregister event callbacks; produce and stop speech; get and set speech engine properties; and start and stop event loops.</p>
+<div class="section" id="the-engine-factory">
+<h2>The Engine factory<a class="headerlink" href="#the-engine-factory" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyttsx.init">
+<tt class="descclassname">pyttsx.</tt><tt class="descname">init</tt><big>(</big><span class="optional">[</span><em>driverName : string</em>, <em>debug : bool</em><span class="optional">]</span><big>)</big> &rarr; pyttsx.Engine<a class="headerlink" href="#pyttsx.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a reference to an engine instance that will use the given driver. If the requested driver is already in use by another engine instance, that engine is returned. Otherwise, a new engine is created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>driverName</em> &#8211; <p>Name of the <a title="The package containing the available driver implementations" class="reference" href="drivers.html#module-pyttsx.drivers"><tt class="xref docutils literal"><span class="pre">pyttsx.drivers</span></tt></a> module to load and use. Defaults to the best available driver for the platform, currently:</p>
+<ul>
+<li><cite>sapi5</cite> - SAPI5 on Windows</li>
+<li><cite>nsss</cite> - NSSpeechSynthesizer on Mac OS X</li>
+<li><cite>espeak</cite> - eSpeak on every other platform</li>
+</ul>
+</li>
+<li><em>debug</em> &#8211; Enable debug output or not.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ImportError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">When the requested driver is not found</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">When the driver fails to initialize</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyttsx.engine">
+<h2>The Engine interface<a class="headerlink" href="#module-pyttsx.engine" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyttsx.engine.Engine">
+<em class="property">
+class </em><tt class="descclassname">pyttsx.engine.</tt><tt class="descname">Engine</tt><a class="headerlink" href="#pyttsx.engine.Engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides application access to text-to-speech synthesis.</p>
+<dl class="method">
+<dt id="pyttsx.engine.Engine.connect">
+<tt class="descname">connect</tt><big>(</big><em>topic : string</em>, <em>cb : callable</em><big>)</big> &rarr; dict<a class="headerlink" href="#pyttsx.engine.Engine.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a callback for notifications on the given topic.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>topic</em> &#8211; Name of the event to subscribe to.</li>
+<li><em>cb</em> &#8211; Function to invoke when the event fires.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A token that the caller can use to unsubscribe the callback later.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The following are the valid topics and their callback signatures.</p>
+<dl class="describe">
+<dt>
+<tt class="descname">started-utterance</tt></dt>
+<dd><p>Fired when the engine begins speaking an utterance. The associated callback must have the folowing signature.</p>
+<dl class="function">
+<dt id="pyttsx.engine.Engine.onStartUtterance">
+<tt class="descname">onStartUtterance</tt><big>(</big><em>name : string</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.onStartUtterance" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>name</em> &#8211; Name associated with the utterance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">started-word</tt></dt>
+<dd><p>Fired when the engine begins speaking a word. The associated callback must have the folowing signature.</p>
+<dl class="function">
+<dt id="pyttsx.engine.Engine.onStartWord">
+<tt class="descname">onStartWord</tt><big>(</big><em>name : string</em>, <em>location : integer</em>, <em>length : integer</em><big>)</big><a class="headerlink" href="#pyttsx.engine.Engine.onStartWord" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>name</em> &#8211; Name associated with the utterance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">finished-utterance</tt></dt>
+<dd><p>Fired when the engine finishes speaking an utterance. The associated callback must have the folowing signature.</p>
+<dl class="function">
+<dt id="pyttsx.engine.Engine.onFinishUtterance">
+<tt class="descname">onFinishUtterance</tt><big>(</big><em>name : string</em>, <em>completed : bool</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.onFinishUtterance" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> &#8211; Name associated with the utterance.</li>
+<li><em>completed</em> &#8211; True if the utterance was output in its entirety or not.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">error</tt></dt>
+<dd><p>Fired when the engine encounters an error. The associated callback must have the folowing signature.</p>
+<dl class="function">
+<dt id="pyttsx.engine.Engine.onError">
+<tt class="descname">onError</tt><big>(</big><em>name : string</em>, <em>exception : Exception</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.onError" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> &#8211; Name associated with the utterance that caused the error.</li>
+<li><em>exception</em> &#8211; Exception that was raised.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><em>token : dict</em><big>)</big><a class="headerlink" href="#pyttsx.engine.Engine.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregisters a notification callback.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>token</em> &#8211; Token returned by <a title="pyttsx.engine.Engine.connect" class="reference" href="#pyttsx.engine.Engine.connect"><tt class="xref docutils literal"><span class="pre">connect()</span></tt></a> associated with the callback to be disconnected.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.endLoop">
+<tt class="descname">endLoop</tt><big>(</big><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.endLoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ends a running event loop. If <a title="pyttsx.engine.Engine.startLoop" class="reference" href="#pyttsx.engine.Engine.startLoop"><tt class="xref docutils literal"><span class="pre">startLoop()</span></tt></a> was called with <cite>useDriverLoop</cite> set to True, this method stops processing of engine commands and immediately exits the event loop. If it was called with False, this method stops processing of engine commands, but it is up to the caller to end the external event loop it started.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">When the loop is not running</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.getProperty">
+<tt class="descname">getProperty</tt><big>(</big><em>name : string</em><big>)</big> &rarr; object<a class="headerlink" href="#pyttsx.engine.Engine.getProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current value of an engine property.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>name</em> &#8211; Name of the property to query.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Value of the property at the time of this invocation.</td>
+</tr>
+</tbody>
+</table>
+<p>The following property names are valid for all drivers.</p>
+<dl class="describe">
+<dt>
+<tt class="descname">rate</tt></dt>
+<dd>Integer speech rate in words per minute. Defaults to 200 word per minute.</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">voice</tt></dt>
+<dd>String identifier of the active voice.</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">voices</tt></dt>
+<dd>List of <a title="pyttsx.voice.Voice" class="reference" href="#pyttsx.voice.Voice"><tt class="xref docutils literal"><span class="pre">pyttsx.voice.Voice</span></tt></a> descriptor objects.</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">volume</tt></dt>
+<dd>Floating point volume in the range of 0.0 to 1.0 inclusive. Defaults to 1.0.</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.isBusy">
+<tt class="descname">isBusy</tt><big>(</big><big>)</big> &rarr; bool<a class="headerlink" href="#pyttsx.engine.Engine.isBusy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets if the engine is currently busy speaking an utterance or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if speaking, false if not.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.runAndWait">
+<tt class="descname">runAndWait</tt><big>(</big><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.runAndWait" title="Permalink to this definition">¶</a></dt>
+<dd>Blocks while processing all currently queued commands. Invokes callbacks for engine notifications appropriately. Returns when all commands queued before this call are emptied from the queue.</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.say">
+<tt class="descname">say</tt><big>(</big><em>text : unicode</em>, <em>name : string</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.say" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queues a command to speak an utterance. The speech is output according to the properties set before this command in the queue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>text</em> &#8211; Text to speak.</li>
+<li><em>name</em> &#8211; Name to associate with the utterance. Included in notifications about this utterance.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.setProperty">
+<tt class="descname">setProperty</tt><big>(</big><em>name</em>, <em>value</em><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.setProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queues a command to set an engine property. The new property value affects all utterances queued after this command.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> &#8211; Name of the property to change.</li>
+<li><em>value</em> &#8211; Value to set.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The following property names are valid for all drivers.</p>
+<dl class="describe">
+<dt>
+<tt class="descname">rate</tt></dt>
+<dd>Integer speech rate in words per minute.</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">voice</tt></dt>
+<dd>String identifier of the active voice.</dd></dl>
+
+<dl class="describe">
+<dt>
+<tt class="descname">volume</tt></dt>
+<dd>Floating point volume in the range of 0.0 to 1.0 inclusive.</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.startLoop">
+<tt class="descname">startLoop</tt><big>(</big><span class="optional">[</span><em>useDriverLoop : bool</em><span class="optional">]</span><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.startLoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts running an event loop during which queued commands are processed and notifications are fired.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>useDriverLoop</em> &#8211; True to use the loop provided by the selected driver. False to indicate the caller will enter its own loop after invoking this method. The caller&#8217;s loop must pump events for the driver in use so that pyttsx notifications are delivered properly (e.g., SAPI5 requires a COM message pump). Defaults to True.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyttsx.engine.Engine.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big> &rarr; None<a class="headerlink" href="#pyttsx.engine.Engine.stop" title="Permalink to this definition">¶</a></dt>
+<dd>Stops the current utterance and clears the command queue.</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyttsx.voice">
+<h2>The Voice metadata<a class="headerlink" href="#module-pyttsx.voice" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyttsx.voice.Voice">
+<em class="property">
+class </em><tt class="descclassname">pyttsx.voice.</tt><tt class="descname">Voice</tt><a class="headerlink" href="#pyttsx.voice.Voice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains information about a speech synthesizer voice.</p>
+<dl class="attribute">
+<dt id="pyttsx.voice.Voice.age">
+<tt class="descname">age</tt><a class="headerlink" href="#pyttsx.voice.Voice.age" title="Permalink to this definition">¶</a></dt>
+<dd>Integer age of the voice in years. Defaults to <tt class="xref xref docutils literal"><span class="pre">None</span></tt> if unknown.</dd></dl>
+
+<dl class="attribute">
+<dt id="pyttsx.voice.Voice.gender">
+<tt class="descname">gender</tt><a class="headerlink" href="#pyttsx.voice.Voice.gender" title="Permalink to this definition">¶</a></dt>
+<dd>String gender of the voice: <cite>male</cite>, <cite>female</cite>, or <cite>neutral</cite>. Defaults to <tt class="xref xref docutils literal"><span class="pre">None</span></tt> if unknown.</dd></dl>
+
+<dl class="attribute">
+<dt id="pyttsx.voice.Voice.id">
+<tt class="descname">id</tt><a class="headerlink" href="#pyttsx.voice.Voice.id" title="Permalink to this definition">¶</a></dt>
+<dd>String identifier of the voice. Used to set the active voice via <tt class="xref docutils literal"><span class="pre">pyttsx.engine.Engine.setPropertyValue()</span></tt>. This attribute is always defined.</dd></dl>
+
+<dl class="attribute">
+<dt id="pyttsx.voice.Voice.languages">
+<tt class="descname">languages</tt><a class="headerlink" href="#pyttsx.voice.Voice.languages" title="Permalink to this definition">¶</a></dt>
+<dd>List of string languages supported by this voice. Defaults to an empty list of unknown.</dd></dl>
+
+<dl class="attribute">
+<dt id="pyttsx.voice.Voice.name">
+<tt class="descname">name</tt><a class="headerlink" href="#pyttsx.voice.Voice.name" title="Permalink to this definition">¶</a></dt>
+<dd>Human readable name of the voice. Defaults to <tt class="xref xref docutils literal"><span class="pre">None</span></tt> if unknown.</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="speaking-text">
+<h3>Speaking text<a class="headerlink" href="#speaking-text" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyttsx</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;Sally sells seashells by the seashore.&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">runAndWait</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listening-for-events">
+<h3>Listening for events<a class="headerlink" href="#listening-for-events" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyttsx</span>
+<span class="k">def</span> <span class="nf">onStart</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s">&#39;starting&#39;</span><span class="p">,</span> <span class="n">name</span>
+<span class="k">def</span> <span class="nf">onWord</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">length</span>
+<span class="k">def</span> <span class="nf">onEnd</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">completed</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s">&#39;finishing&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">completed</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">runAndWait</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interrupting-an-utterance">
+<h3>Interrupting an utterance<a class="headerlink" href="#interrupting-an-utterance" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyttsx</span>
+<span class="k">def</span> <span class="nf">onWord</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">length</span>
+   <span class="k">if</span> <span class="n">location</span> <span class="o">&gt;</span> <span class="mf">10</span><span class="p">:</span>
+      <span class="n">engine</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">runAndWait</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="changing-voices">
+<h3>Changing voices<a class="headerlink" href="#changing-voices" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">voices</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&#39;voices&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">voice</span> <span class="ow">in</span> <span class="n">voices</span><span class="p">:</span>
+   <span class="n">engine</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&#39;voice&#39;</span><span class="p">,</span> <span class="n">voice</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+   <span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">runAndWait</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="changing-speech-rate">
+<h3>Changing speech rate<a class="headerlink" href="#changing-speech-rate" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">rate</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&#39;rate&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&#39;rate&#39;</span><span class="p">,</span> <span class="n">rate</span><span class="o">+</span><span class="mf">50</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">runAndWait</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="changing-volume">
+<h3>Changing volume<a class="headerlink" href="#changing-volume" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&#39;volume&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&#39;volume&#39;</span><span class="p">,</span> <span class="n">volume</span><span class="o">-</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">runAndWait</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-a-driver-event-loop">
+<h3>Running a driver event loop<a class="headerlink" href="#running-a-driver-event-loop" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">onStart</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s">&#39;starting&#39;</span><span class="p">,</span> <span class="n">name</span>
+<span class="k">def</span> <span class="nf">onWord</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s">&#39;word&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">length</span>
+<span class="k">def</span> <span class="nf">onEnd</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">completed</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s">&#39;finishing&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">completed</span>
+   <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&#39;fox&#39;</span><span class="p">:</span>
+      <span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;What a lazy dog!&#39;</span><span class="p">,</span> <span class="s">&#39;dog&#39;</span><span class="p">)</span>
+   <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&#39;dog&#39;</span><span class="p">:</span>
+      <span class="n">engine</span><span class="o">.</span><span class="n">endLoop</span><span class="p">()</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">,</span> <span class="s">&#39;fox&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">startLoop</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-an-external-event-loop">
+<h3>Using an external event loop<a class="headerlink" href="#using-an-external-event-loop" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">engine</span> <span class="o">=</span> <span class="n">pyttsx</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumped over the lazy dog.&#39;</span><span class="p">,</span> <span class="s">&#39;fox&#39;</span><span class="p">)</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">startLoop</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="c"># engine.iterate() must be called inside externalLoop()</span>
+<span class="n">externalLoop</span><span class="p">()</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">endLoop</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference" href="">Using pyttsx</a><ul>
+<li><a class="reference" href="#the-engine-factory">The Engine factory</a></li>
+<li><a class="reference" href="#module-pyttsx.engine">The Engine interface</a></li>
+<li><a class="reference" href="#module-pyttsx.voice">The Voice metadata</a></li>
+<li><a class="reference" href="#examples">Examples</a><ul>
+<li><a class="reference" href="#speaking-text">Speaking text</a></li>
+<li><a class="reference" href="#listening-for-events">Listening for events</a></li>
+<li><a class="reference" href="#interrupting-an-utterance">Interrupting an utterance</a></li>
+<li><a class="reference" href="#changing-voices">Changing voices</a></li>
+<li><a class="reference" href="#changing-speech-rate">Changing speech rate</a></li>
+<li><a class="reference" href="#changing-volume">Changing volume</a></li>
+<li><a class="reference" href="#running-a-driver-event-loop">Running a driver event loop</a></li>
+<li><a class="reference" href="#using-an-external-event-loop">Using an external event loop</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">pyttsx - Text-to-speech x-platform</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="drivers.html"
+                                  title="next chapter">Implementing drivers</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="drivers.html" title="Implementing drivers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="pyttsx - Text-to-speech x-platform"
+             >previous</a> |</li>
+        <li><a href="index.html">pyttsx v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Peter Parente.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+    </div>
+  </body>
+</html>
