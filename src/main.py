@@ -9,6 +9,7 @@ from BasicOutput import *
 from VoiceOutput import *
 from RawInput import *
 from MimicPlugin import *
+from ExitPlugin import *
 from MicrophoneInput import *
 import pyttsx
 
@@ -17,7 +18,7 @@ import pyttsx
 linusInputMethod = MicrophoneInput()
 #linusOutputMethod = BasicOutput()
 linusOutputMethod = VoiceOutput()
-linusPlugins = [MimicPlugin()]
+linusPlugins = [MimicPlugin(), ExitPlugin()]
 linus = Linus(linusInputMethod, linusOutputMethod, linusPlugins)
 
 linus.loop()

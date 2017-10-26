@@ -8,6 +8,7 @@ class VoiceOutput:
 		
 	
 	def sendOutput(self, arg):
+		print("you said: "+arg)
 		engine = pyttsx.init()
 		engine.say(arg)
 		engine.runAndWait()

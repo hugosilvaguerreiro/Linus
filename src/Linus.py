@@ -21,7 +21,7 @@ class Linus:
         outputsAfterApplyingPlugins = []
 
         for plugin in self.plugins:
-            outputsAfterApplyingPlugins.append(plugin.execute(inputReceived))
+            outputsAfterApplyingPlugins.append(plugin.execute(inputReceived, self))
 
         return outputsAfterApplyingPlugins
 
@@ -38,5 +38,3 @@ class Linus:
         while True:
             inputReceived = self.getInput()
             pluginsOutput = self.applyPlugins(inputReceived)
-            for out in pluginsOutput:
-                self.sendOutput(out)

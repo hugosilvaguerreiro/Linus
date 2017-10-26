@@ -2,7 +2,7 @@ from Input import *
 import speech_recognition as sr
 
 class MicrophoneInput(Input):
-	def __init__(self, arg="Enter your message\n", timeout=3, phraseTimeLimit=3):
+	def __init__(self, arg="Enter your message\n", timeout=3, phraseTimeLimit=10):
 		self.arg = arg
 		self.energy_threshold = 4000
 		self.recognizer = sr.Recognizer()
@@ -29,7 +29,7 @@ class MicrophoneInput(Input):
 
 		r = self.recognizer
 		r.dynamic_energy_threshold = False
-		r.energy_threshold = 1000
+		r.energy_threshold = 4000
 
 
 		with self.source as source:
@@ -37,7 +37,7 @@ class MicrophoneInput(Input):
 				audio = self.listen(source)
 				try:
 					print "recognizing..."
-					msg =  r.recognize_sphinx(audio)
+					msg =  r.recognize_google(audio)
 				except sr.UnknownValueError:
 					msg = "Sphinx could not understand audio"
 				except sr.RequestError as e:
