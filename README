@@ -1,0 +1,5 @@
+1-Install by making the install.sh an executable: sudo chmod +x install.sh
+2-Run the installation script: sudo ./install.sh
+3-Main program in ./src/main.py run it using python main.py
+
+Note: Python 2.6, 2.7, or 3.3+ (required)
