@@ -5,7 +5,7 @@ class MicrophoneInput(Input):
 	def __init__(self, arg="Enter your message\n", timeout=3, phraseTimeLimit=10, master = "master"):
 		self.arg = arg
 		self.master = "master"
-		self.energy_threshold = 4000
+		self.energy_threshold = 1000
 		self.recognizer = sr.Recognizer()
 		self.recognizer.dynamic_energy_threshold = False
 		self.recognizer.energy_threshold = self.energy_threshold
