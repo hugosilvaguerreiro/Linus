@@ -1,0 +1,69 @@
+- label:
+	- greet
+- data:
+	> hi
+	< <
+	> hi there
+	<<
+	> hello
+	< <
+	> greetings
+	< <
+	> hello
+	< <
+	> hello
+	< <
+	> greetings
+	< <
+	> hi, how is it going
+	< <
+	> how are you doing
+	< <
+	> how are you doing
+	< <
+	> how are you doing
+	< <
+	> nice to meet you
+	< <
+	> thank you
+	< <
+	> how do you do
+	< <
+	> i'm doing well
+	< <
+	> how do you do
+	< <
+	> how are you
+	< <
+	> hi, nice to meet you
+	< <
+	> thank you. You too
+	< <
+	> it is a pleasure to meet you
+	< <
+	> thank you. You too
+	< <
+	> top of the morning to you
+	< <
+	> thank you kindly
+	< <
+	> top of the morning to you
+	< <
+	> and the rest of the day to you
+	< <
+	> what's up
+	< <
+	> not too much
+	< <
+	> not much, how about you
+	< <
+	> what's up
+	< <
+	> nothing much
+	< <
+	> what's up
+	< <
+	> hey there
+	< <
+	> hey
+	< <

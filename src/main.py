@@ -1,30 +1,24 @@
 import sys
 sys.path.insert(0, './input')
 sys.path.insert(0, './output')
-sys.path.insert(0, './plugins')
-sys.path.insert(0, '../libraries/pyttsx-1.0/pyttsx')
+sys.path.insert(0, './intents')
+sys.path.insert(0, './skills')
+sys.path.insert(0, './storage')
+
 import speech_recognition as sr
+import pyttsx
 from Linus import *
 from BasicOutput import *
 from VoiceOutput import *
 from RawInput import *
-from MimicPlugin import *
-from SpreadSheetPlugin import *
-from ExitPlugin import *
 from MicrophoneInput import *
-import pyttsx
+from IntentDecoder import *
 
-
-#linusInputMethod = RawInput()
-linusInputMethod = MicrophoneInput()
-#linusOutputMethod = BasicOutput()
+linusInputMethod = RawInput()
+#linusInputMethod = MicrophoneInput()
+# #linusOutputMethod = BasicOutput()
 linusOutputMethod = VoiceOutput()
-linusPlugins = [MimicPlugin(), ExitPlugin(), SpreadSheetPlugin()]
-linus = Linus(linusInputMethod, linusOutputMethod, linusPlugins)
+linusIntentDecoder = IntentDecoder()
+linus = Linus(linusInputMethod, linusOutputMethod, linusIntentDecoder)
 
 linus.loop()
-
-
-
-
-	

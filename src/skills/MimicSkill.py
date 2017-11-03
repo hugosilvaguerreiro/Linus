@@ -1,6 +1,6 @@
-from Plugin import *
+from Skill import *
 
-class MimicPlugin(Plugin):
+class MimicSkill(Skill):
 	def __init__(self, arg=None):
 		self.arg = None
 

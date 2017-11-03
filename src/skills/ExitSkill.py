@@ -1,6 +1,6 @@
-from Plugin import *
+from Skill import *
 
-class ExitPlugin(Plugin):
+class ExitSkill(Skill):
 	def __init__(self, arg=None):
 		self.arg = None
 
