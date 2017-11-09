@@ -36,6 +36,22 @@ class ClassifierSkill(Skill):
 				train += [(rawData[i][3:-1], label)]
 		return train
 
+	def extractTrainResponsesFileData(self, rawData):
+		label = rawData[1][3:-1]
+		prefixIn = "\t> "
+		prefixOut = "\t< < "
+		train = {}
+		currentPhrase = None
+
+		for i in range(2, len(rawData)):
+			if rawData[i].startswith(prefixIn):
+				train[rawData[i][3:-1]] = []
+				currentPhrase = rawData[i][3:-1]
+			if rawData[i].startswith(prefixOut) and currentPhrase != None:
+				train[currentPhrase] += [rawData[i][5:-1]]
+		return train
+
+
 	def classify(self, text):
 		label = self.classifier.classify(text)
 		prob = self.classifier.prob_classify(text)

@@ -14,10 +14,12 @@ class IntentDecoder(Intent):
 		self.label = label
 		self.storageAccesser = StorageAccesser()
 		self.classifier = ClassifierSkill()
-		self.intents = {"greet": GreetIntent("greet"), "spreadsheet" : SpreadsheetIntent("spreadsheet"),
-						"spam" : SpamIntent("spam")}
+		self.intents = {"greet": GreetIntent("greet", self.classifier), 
+						"spreadsheet" : SpreadsheetIntent("spreadsheet", self.classifier),
+						"spam" : SpamIntent("spam", self.classifier)}
 
 	def execute(self, linus, inputReceived):
+		print(inputReceived)
 		label = self.classifier.classify(inputReceived)
 		return self.intents[label]
 

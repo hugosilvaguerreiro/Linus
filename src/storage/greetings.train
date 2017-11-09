@@ -2,68 +2,54 @@
 	- greet
 - data:
 	> hi
-	< <
+	< < hi there
+
 	> hi there
-	<<
-	> hello
-	< <
+	< < hi
+
 	> greetings
-	< <
+	< < what's up
+
 	> hello
-	< <
-	> hello
-	< <
-	> greetings
-	< <
+	< < hi there
+
+	> hello there
+	< < General Kenobi
+
 	> hi, how is it going
-	< <
+	< < hello! i'm fine
+
 	> how are you doing
-	< <
-	> how are you doing
-	< <
-	> how are you doing
-	< <
+	< < i'm fine
+
 	> nice to meet you
-	< <
-	> thank you
-	< <
+	< < thank you
+
 	> how do you do
-	< <
-	> i'm doing well
-	< <
+	< < fine
+
 	> how do you do
-	< <
+	< < i'm fine
+	< < i'm doing well
+
 	> how are you
-	< <
+	< < i'm fine
+
 	> hi, nice to meet you
-	< <
-	> thank you. You too
-	< <
+	< < thank you. You too
+
 	> it is a pleasure to meet you
-	< <
-	> thank you. You too
-	< <
+	< < thank you. You too
+
 	> top of the morning to you
-	< <
-	> thank you kindly
-	< <
+	< < thank you kindly
+
 	> top of the morning to you
-	< <
-	> and the rest of the day to you
-	< <
+	< < and the rest of the day to you
+
 	> what's up
-	< <
-	> not too much
-	< <
-	> not much, how about you
-	< <
-	> what's up
-	< <
-	> nothing much
-	< <
-	> what's up
-	< <
-	> hey there
-	< <
+	< < not too much
+	< < not much, how about you
+
 	> hey
-	< <
+	< < hi

@@ -10,9 +10,9 @@ from StorageAccesser import *
 from defaults import *
 
 class SpreadsheetIntent(Intent):
-	def __init__(self, storageAccesser, label=None):
+	def __init__(self, label=None, classifier = None):
 		self.label = label
-		self.spreadSheetSkill = SpreadsheetSkill()
+		#self.spreadSheetSkill = SpreadsheetSkill()
 		self.classifier = ClassifierSkill(0.2, DEFAULT_STORAGE_PATH + "spreadsheetCommands/")
 		self.storageAccesser = StorageAccesser(DEFAULT_STORAGE_PATH + "spreadsheetCommands/")
 
