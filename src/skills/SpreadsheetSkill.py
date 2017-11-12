@@ -6,7 +6,7 @@ from StorageAccesser import *
 from Skill import *
 from TextToIntSkill import *
 from oauth2client.service_account import ServiceAccountCredentials
-from defaults import *
+
 
 class SpreadsheetSkill(Skill):
 	def __init__(self, spreadSheetName = DEFAULT_SPREAD_SHEET_NAME, 
@@ -17,11 +17,14 @@ class SpreadsheetSkill(Skill):
 		self.jsonFileName = self.storage.getFilePath(jsonFileName)
 		self.creds = ServiceAccountCredentials.from_json_keyfile_name(self.jsonFileName, self.scope)
 		self.client = gspread.authorize(self.creds)
-
 		self.sheet = self.client.open(spreadSheetName).sheet1 #add more sheets if the file has more sheets
-	
+		self.values = self.getAllValues()
+
 	def getAllValues(self):
 		return self.sheet.get_all_values()
+
+	def getValues(self):
+		return self.values
 
 	def getAllRecords(self):
 		return self.sheet.get_all_records()
@@ -31,14 +34,15 @@ class SpreadsheetSkill(Skill):
 			values = self.sheet.get_all_values()
 		for i in range(0,len(values)):
 			if key == values[i][0]:
-				return i + 1
+				return i +1
 		return None
 
 	def addValue(self, key, addValue, values=None):
 		if values == None:
 			values = self.sheet.get_all_values()
 		location = self.findItem(key, values)
-		self.editValue(key, values[i][1] + addValue, values)
+		if location != None:
+			self.editValue(key, str(eval(values[location-1][1]) + addValue), values)
 
 	def editValue(self, key, newValue, values= None):
 		if values == None:

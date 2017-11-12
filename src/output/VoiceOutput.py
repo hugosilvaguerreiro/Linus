@@ -1,6 +1,5 @@
 from Output import *
-import pyttsx
-
+import subprocess
 
 class VoiceOutput:
 	def __init__(self, arg=None):
@@ -9,6 +8,4 @@ class VoiceOutput:
 	
 	def sendOutput(self, arg):
 		print(arg)
-		engine = pyttsx.init()
-		engine.say(arg)
-		engine.runAndWait()
+		subprocess.call(["espeak", "-s", " 180", "-p", "25","-a","70", arg])

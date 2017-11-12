@@ -31,7 +31,7 @@ class TextToIntSkill(Skill):
 				prev = False
 		return out
 
-	def execute(self, textnum, linus):
+	def execute(self, textnum, linus=None):
 		numwords = {}
 		numwords["and"] = (1, 0)
 		for idx, word in enumerate(self.units):    numwords[word] = (1, idx)
@@ -41,7 +41,8 @@ class TextToIntSkill(Skill):
 		current = result = 0
 		for word in textnum.split():
 			if word not in numwords:
-			  raise Exception("Illegal word: " + word)
+				return textnum
+		  		raise Exception("Illegal word: " + word)
 
 			scale, increment = numwords[word]
 			current = current * scale + increment

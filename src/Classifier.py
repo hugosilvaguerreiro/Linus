@@ -9,7 +9,7 @@ from defaults import *
 
 
 class ClassifierSkill(Skill):
-	def __init__(self, spam=0.65, path=DEFAULT_STORAGE_PATH, trainFiles="all"):
+	def __init__(self, spam=0.7, path=DEFAULT_STORAGE_PATH, trainFiles="all"):
 		self.spam = spam
 		self.storage = StorageAccesser(path)
 		self.trainFiles = trainFiles
@@ -55,11 +55,12 @@ class ClassifierSkill(Skill):
 	def classify(self, text):
 		label = self.classifier.classify(text)
 		prob = self.classifier.prob_classify(text)
-		print( (label, prob.prob(label)))
+
 		if prob.prob(label) < self.spam:
 			return "spam"
 		else:
 			return label
+		label = cl.classify(test)
 
 	def execute(self, linus, text):
 		return self.classify(text)

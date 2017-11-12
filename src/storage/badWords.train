@@ -1,0 +1,50 @@
+- label:
+	- badWord
+- data:
+	> go f*** yourself
+	< < Okay, i will
+	< < No thanks
+	< < I'm sorry
+	< < I'm going, but you can come with me
+	< < Don't you have anything better to do than swearing to a machine?
+	< < Sorry sir, this is a christian server. No swearing please
+
+	> f***
+	< < Don't you have anything better to do than swearing to a machine?
+	< < Sorry sir, this is a christian server. No swearing please
+
+	> f******
+	< < Don't you have anything better to do than swearing to a machine?
+	< < Sorry sir, this is a christian server. No swearing please
+
+	> a******
+	< < You could say i have one yes
+	< < Sorry
+
+	> you're an a******
+	< < I'm sorry. I've learned from you.
+	< < I know
+
+	> f*****
+	< < It's a bunch of sticks
+	< < I don't judge. You can be anything you want
+	< < That's inapropriate
+
+	> gay
+	< < I don't judge. You can be anything you want
+	< < Okay. whatever you say.
+
+	> are you gay
+	< < I'm not
+	< < maybe
+	< < yes
+
+	> are you high
+	< < All the time
+	< < yes
+	< < High as a kite
+	< < how did you know
+
+	> high
+	< < I am
+	< < how did you know

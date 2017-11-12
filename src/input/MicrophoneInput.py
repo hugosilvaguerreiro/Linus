@@ -43,6 +43,7 @@ class MicrophoneInput(Input):
 					msg = "sorry " + self.master +" I could not understand audio"
 				except sr.RequestError as e:
 					msg = "Sphinx error; {0}".format(e)
+				print(msg)
 				return msg
 			except sr.WaitTimeoutError:
 				print("passing...")
