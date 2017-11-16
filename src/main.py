@@ -4,6 +4,7 @@ sys.path.insert(0, './output')
 sys.path.insert(0, './intents')
 sys.path.insert(0, './skills')
 sys.path.insert(0, './storage')
+sys.path.insert(0, './tools')
 
 import speech_recognition as sr
 import pyttsx

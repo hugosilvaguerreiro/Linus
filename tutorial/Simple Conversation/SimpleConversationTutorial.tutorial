@@ -1,0 +1,21 @@
+The goal of this tutorial is to make Linus talk about some things related to emotions. (Documentation is not done yet sorry :/)
+
+1 - Copy the file "emotions.train" to the folder "src/storage". This is where all data is stored for access.
+
+2- Create a new Intent class called "EmotionIntent.py" and make it respond (copy the code from HumourIntent.py, it's similar, or use the file i've created for you). 
+
+3- Place this file in the folder "src/intents". This folder is where you have the Intents Linus can perceive.
+
+4- Add the new Intent in the "IntentDecoder.py" so that you can know which Intent to call when you say something related to emotions. Don't forget to import the new file in IntentDecoder. (see tip if you don't know what to add)
+
+5- And you're good to go, test if it is working by running "python main.py"
+
+
+
+
+
+
+
+
+
+TIP if you don't know what to add in step 4: "emotion": EmotionIntent("emotion", "emotion.train", self.classifier)

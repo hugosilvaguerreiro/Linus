@@ -12,18 +12,6 @@ class BadWordIntent(Intent):
 		self.label = label
 		self.classifier = classifier
 		self.storageAccesser = StorageAccesser(DEFAULT_STORAGE_PATH)
-	def respond(self, inputReceived):
-		rawData = self.storageAccesser.readFileLines("badWords.train")
-		data = self.classifier.extractTrainResponsesFileData(rawData)
-		bestOption = ""
-		bestOptionSimilarity = 0
-		for option in data:
-			value = self.similar(option, inputReceived)
-			if value > bestOptionSimilarity:
-				bestOption = option
-				bestOptionSimilarity = value
-
-		return data[bestOption][randint(0, len(data[bestOption] ) - 1)]
 
 	def execute(self, linus, inputReceived):
 		return self.respond(inputReceived)

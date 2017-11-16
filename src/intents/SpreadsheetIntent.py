@@ -1,11 +1,12 @@
 import sys
 sys.path.insert(0, '../skills')
 sys.path.insert(0, '../storage')
+sys.path.insert(0, '../tools')
 sys.path.insert(0, '..')
 from Intent import *
 from SpreadsheetSkill import *
-from ClassifierSkill import *
-from TextToIntSkill import *
+from Classifier import *
+from Text2Int import *
 from StorageAccesser import *
 from defaults import *
 from defaults import *

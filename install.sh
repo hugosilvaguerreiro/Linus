@@ -14,3 +14,14 @@ sudo apt-get install gspread
 sudo -H pip install gspread
 sudo -H pip install --upgrade oauth2client
 sudo apt-get install espeak
+sudo -H pip install -U textblob
+python -m textblob.download_corpora
+sudo apt-get install festlex-cmu
+cd /usr/share/festival/voices/english/
+sudo wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_bdl_arctic-0.95-release.tar.bz2
+sudo tar jxf cmu_us_bdl_arctic-0.95-release.tar.bz2
+#rm /usr/share/festival/voices/english/cmu_us_bdl_arctic-0.95-release.tar.bz2
+sudo ln -s cmu_us_bdl_arctic cmu_us_bdl_arctic_clunits
+sudo cp /etc/festival.scm /etc/festival.scm.backup
+sudo echo "(set! voice_default 'voice_cmu_us_bdl_arctic_clunits)" >> /etc/festival.scm
+exit

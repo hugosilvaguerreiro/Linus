@@ -1,10 +1,12 @@
 import sys
 sys.path.insert(0, '../skills')
 sys.path.insert(0, '../storage')
+sys.path.insert(0, '../tools')
 from Intent import *
-from ClassifierSkill import *
+from Classifier import *
 from GreetIntent import *
 from SpreadsheetIntent import *
+from EmotionIntent import *
 from SpamIntent import *
 from HumourIntent import *
 from BadWordIntent import *
@@ -16,7 +18,7 @@ class IntentDecoder(Intent):
 		Intent.__init__(self, label, file)
 		self.label = label
 		self.storageAccesser = StorageAccesser()
-		self.classifier = ClassifierSkill()
+		self.classifier = Classifier()
 		self.intents = {"greet": GreetIntent("greet", "greetings.train", self.classifier), 
 						"spreadsheet" : SpreadsheetIntent("spreadsheet", "spreadsheet.train", self.classifier),
 						"humour": HumourIntent("humour", "humour.train", self.classifier),

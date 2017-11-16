@@ -8,4 +8,6 @@ class VoiceOutput:
 	
 	def sendOutput(self, arg):
 		print(arg)
-		subprocess.call(["espeak", "-s", " 180", "-p", "25","-a","70", arg])
+		command = 'echo "'+ arg + '" | festival --tts'
+		subprocess.call(command, shell=True)
+		#subprocess.call(["espeak", "-s", " 180", "-p", "25","-a","70", arg])

@@ -1,10 +1,11 @@
 import gspread
 import sys
 sys.path.insert(0, '../storage')
+sys.path.insert(0, '../tools')
 sys.path.insert(0, '..')
 from StorageAccesser import *
 from Skill import *
-from TextToIntSkill import *
+from Text2Int import *
 from oauth2client.service_account import ServiceAccountCredentials
 
 

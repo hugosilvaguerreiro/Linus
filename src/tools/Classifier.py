@@ -8,7 +8,7 @@ from StorageAccesser import *
 from defaults import *
 
 
-class ClassifierSkill(Skill):
+class Classifier:
 	def __init__(self, spam=0.7, path=DEFAULT_STORAGE_PATH, trainFiles="all"):
 		self.spam = spam
 		self.storage = StorageAccesser(path)
