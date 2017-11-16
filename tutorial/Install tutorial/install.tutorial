@@ -1,0 +1,16 @@
+1- To install Linus the script needs root access to perform the following line of the script: 
+	"echo "(set! voice_default 'voice_cmu_us_bdl_arctic_clunits)" >> /etc/festival.scm"
+	- Sudo doesn't have enough permissions for executing that write
+	-this line writes the string inside a file called "festival.scm". 
+	-This is needed so your computer can synthesise text to speech.
+
+2- make "RUNMEFIRST.sh" and "install.sh" executables by executing sudo chmod +x RUNMEFIRST.sh and sudo chmod +x install.sh
+2- Run "RUNMEFIRST.sh" by executing ./RUNMEFIRST.sh
+3- Run "install.sh" ./install.sh (this will take some time) (It will install a lot of stuff, i will include an uninstall script later don't worry)
+
+4- now you have almost everything you need to run Linus.
+5- You need to specify an Google spreadsheet that will work has the "inventory"
+6- follow this link (https://www.twilio.com/blog/2017/02/an-easy-way-to-read-and-write-to-a-google-spreadsheet-in-python.html) to obtain the .json file needed for this.
+7- rename the file to "spreadsheet.json" and place it in the "src/storage" folder.
+8- open "src/defaults.py" and change DEFAULT_SPREAD_SHEET_NAME to the name of your google spreadsheet. The spreadsheet needs to only have two collumns. In collumn A goes the name of the object and in collumn B goes the quantity of that object.
+9- if you've done everything it will probably be working now :D! run python main.py 
